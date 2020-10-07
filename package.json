@@ -4,13 +4,38 @@
   "description": "A custom storage upload plugin for AWS Amplify. Instead of reading file completely in memory, it helps to read file chunk by chunk.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "scripts": {
-    "build": "tsc"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/walvekarnikhil/amplify-s3-chunk-upload"
   },
-  "keywords": [],
+  "bugs": {
+    "url": "https://github.com/walvekarnikhil/amplify-s3-chunk-upload/issues"
+  },
+  "homepage": "https://github.com/walvekarnikhil/amplify-s3-chunk-upload",
+  "scripts": {
+    "build": "tsc",
+    "format": "prettier --write \"src/**/*.ts\"",
+    "lint": "tslint -p tsconfig.json",
+    "prepare": "npm run build",
+    "prepublishOnly": "npm run lint",
+    "preversion": "npm run lint",
+    "version": "npm run format && git add -A src",
+    "postversion": "git push && git push --tags"
+  },
+  "keywords": [
+    "amplify",
+    "AWS-S3",
+    "Large file upload"
+  ],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "aws-amplify": "^3.3.2"
+  },
+  "devDependencies": {
+    "prettier": "^2.1.2",
+    "tslint": "^6.1.3",
+    "tslint-config-prettier": "^1.18.0",
+    "typescript": "^4.0.3"
   }
 }
