@@ -1,20 +1,24 @@
 # AWS Amplify S3 upload
 A custom storage upload plugin for AWS Amplify. Instead of reading file completely in memory, it helps to read file chunk by chunk.
 ---
-The problem with the current Amplify library is that for ReactNative, we have to read the file into blob and which could cause OutOfMemory issue for large files.
+Currently while using Amplify library to upload a to AWS S3 we have to read that file into memory and which could cause OutOfMemory issues while uploading large files in ReactNative. There is no support to read the file in small chunks.
 
-Once the complete file is read in Blob, AWSS3Storage plugin in Amplify will choose to use *Managed upload* in case file size is large than 5mb.
+The Amplify Storage plugin supports Managed upload. It will divide the file into small chunks and upload them in batches.
 
-Here in the plugin, I have tried to have lazy ready operation when actual upload part is created.
+The Amplify library supports custom plugins, using which we can connect with services other than AWS or add a wrapper to AWS services.
 
+To support the uploading of large files using Amplify, I have used the same mechanism as a custom plugin.
+
+NPM Library [amplify-s3-chunk-upload](https://www.npmjs.com/package/amplify-s3-chunk-upload)
+
+---
 ## Usage
-
-Install
+### Install
 ```
 npm i -s amplify-s3-chunk-upload
 ```
 
-Configure Storage plugin in App.js (ReactNative)
+### Configure Storage plugin in App.js (ReactNative)
 ```js
 import { StorageChunkUpload } from 'amplify-s3-chunk-upload';
 import { Credentials } from '@aws-amplify/core';
@@ -30,7 +34,7 @@ storagePlugin.configure(config);
 
 ```
 
-File upload call
+### File upload call
 ```js
 
 // get File stats
@@ -43,7 +47,7 @@ const fileObject = {
 
   // here we will read file as per bodyStart & bodyEnd, this will avoid reading complete file in the memory.
   slice: (bodyStart, bodyEnd) => {
-    // Here in this sample code we are using react-native-fs to read file.
+    // Here in this sample code, we are using react-native-fs to read files.
     return RNFS.read(fileURI, bodyEnd - bodyStart, bodyStart, 'base64')
       .then((data) => Buffer.from(data, 'base64'))
       .catch((error) => {
@@ -52,7 +56,7 @@ const fileObject = {
     },
   };
 
-  // Uplad call, for parameters refer to Amplify docs.
+  // Upload call, for parameters, refer to Amplify docs.
   const result = await Storage.put(`Your-file-name.mp4`, fileObject, {
     contentType: 'video/mp4',
     level: 'protected',
@@ -61,3 +65,5 @@ const fileObject = {
 
 
 ```
+
+Since we are making standard `Storage.put` call and the underlying code also uses the same Amplify Library code, you can pass all other parameters such as `progressCallback` etc.
