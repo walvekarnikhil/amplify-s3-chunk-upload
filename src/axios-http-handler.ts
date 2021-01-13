@@ -76,7 +76,7 @@ export class AxiosHttpHandler implements HttpHandler {
       }
     }
     if (emitter) {
-      axiosRequest.onUploadProgress = function (event) {
+      axiosRequest.onUploadProgress = function(event) {
         emitter.emit(SEND_PROGRESS_EVENT, event);
         logger.debug(event);
       };
