@@ -11,6 +11,8 @@ To support the uploading of large files using Amplify, I have used the same mech
 
 NPM Library [amplify-s3-chunk-upload](https://www.npmjs.com/package/amplify-s3-chunk-upload)
 
+#### *_AWS Sdk Support_*
+* amplify-s3-chunk-upload@2.0.0 supports AWS Sdk 3.4.1
 ---
 ## Usage
 ### Install

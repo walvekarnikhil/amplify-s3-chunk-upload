@@ -16,20 +16,26 @@ import { HttpHandler, HttpRequest, HttpResponse } from '@aws-sdk/protocol-http';
 import { buildQueryString } from '@aws-sdk/querystring-builder';
 import axios, { AxiosRequestConfig, Method } from 'axios';
 import { ConsoleLogger as Logger } from '@aws-amplify/core';
-import { BrowserHttpOptions } from '@aws-sdk/fetch-http-handler';
+import { FetchHttpHandlerOptions } from '@aws-sdk/fetch-http-handler';
 
 const logger = new Logger('axios-http-handler');
 export const SEND_PROGRESS_EVENT = 'sendProgress';
 
 export class AxiosHttpHandler implements HttpHandler {
-  constructor(private readonly httpOptions: BrowserHttpOptions = {}, private readonly emitter?: any) {}
+  constructor(
+    private readonly httpOptions: FetchHttpHandlerOptions = {},
+    private readonly emitter?: any
+  ) {}
 
   destroy(): void {
     // Do nothing. TLS and HTTP/2 connection pooling is handled by the
     // browser.
   }
 
-  handle(request: HttpRequest, options: HttpHandlerOptions): Promise<{ response: HttpResponse }> {
+  handle(
+    request: HttpRequest,
+    options: HttpHandlerOptions
+  ): Promise<{ response: HttpResponse }> {
     const requestTimeoutInMs = this.httpOptions.requestTimeout;
     const emitter = this.emitter;
 
@@ -42,7 +48,9 @@ export class AxiosHttpHandler implements HttpHandler {
     }
 
     const port = request.port;
-    const url = `${request.protocol}//${request.hostname}${port ? `:${port}` : ''}${path}`;
+    const url = `${request.protocol}//${request.hostname}${
+      port ? `:${port}` : ''
+    }${path}`;
 
     const axiosRequest: AxiosRequestConfig = {};
     axiosRequest.url = url;
@@ -88,7 +96,7 @@ export class AxiosHttpHandler implements HttpHandler {
     const raceOfPromises = [
       axios
         .request(axiosRequest)
-        .then((response) => {
+        .then(response => {
           return {
             response: new HttpResponse({
               headers: response.headers,
@@ -97,7 +105,7 @@ export class AxiosHttpHandler implements HttpHandler {
             }),
           };
         })
-        .catch((error) => {
+        .catch(error => {
           // Error
           logger.error(error);
           throw error;
@@ -112,7 +120,9 @@ function requestTimeout(timeoutInMs: number = 0): Promise<never> {
   return new Promise((resolve, reject) => {
     if (timeoutInMs) {
       setTimeout(() => {
-        const timeoutError = new Error(`Request did not complete within ${timeoutInMs} ms`);
+        const timeoutError = new Error(
+          `Request did not complete within ${timeoutInMs} ms`
+        );
         timeoutError.name = 'TimeoutError';
         reject(timeoutError);
       }, timeoutInMs);
