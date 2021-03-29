@@ -69,7 +69,8 @@ export class StorageChunkManagedUpload {
     this.totalBytesToUpload = this.byteLength(this.body);
     if (this.totalBytesToUpload <= this.minPartSize) {
       // Multipart upload is not required. Upload the sanitized body as is
-      this.params.Body = this.body;
+      // We could get body as promise, let's resolve it.
+      this.params.Body = await Promise.resolve(this.body.slice(0, this.totalBytesToUpload));
       const putObjectCommand = new PutObjectCommand(this.params);
       const s3 = await this._createNewS3Client(this.opts, this.emitter);
       return s3.send(putObjectCommand);
