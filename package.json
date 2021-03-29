@@ -1,6 +1,6 @@
 {
   "name": "amplify-s3-chunk-upload",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "A custom storage upload plugin for AWS Amplify. Instead of reading file completely in memory, it helps to read file chunk by chunk.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -13,6 +13,7 @@
   },
   "homepage": "https://github.com/walvekarnikhil/amplify-s3-chunk-upload",
   "scripts": {
+    "prebuild": "npm run lint",
     "build": "tsc",
     "format": "prettier --write \"src/**/*.ts\"",
     "lint": "tslint -p tsconfig.json",
