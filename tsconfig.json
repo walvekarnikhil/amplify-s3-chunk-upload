@@ -4,7 +4,15 @@
     "target": "es2015",
     "declaration": true,
     "outDir": "./dist",
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "lib": [
+			"dom",
+			"es2017",
+			"esnext.asynciterable",
+			"es2019",
+			"es2020.promise"
+		],
+		"moduleResolution": "node"
   },
   "include": [
     "src/index.ts"
