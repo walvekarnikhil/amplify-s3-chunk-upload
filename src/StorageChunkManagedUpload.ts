@@ -23,6 +23,7 @@ import {
   AbortMultipartUploadCommand,
   CompletedPart,
   PutObjectRequest,
+  PutObjectCommandInput,
 } from '@aws-sdk/client-s3';
 import {
   AxiosHttpHandlerOptions,
@@ -55,7 +56,7 @@ export declare interface Part {
 export class StorageChunkManagedUpload {
   // Data for current upload
   private body;
-  private params: PutObjectRequest;
+  private params: PutObjectCommandInput;
   private opts = null;
   private completedParts: CompletedPart[] = [];
   private s3client: S3Client;
@@ -67,7 +68,7 @@ export class StorageChunkManagedUpload {
   private totalBytesToUpload = 0;
   private emitter: events.EventEmitter | null = null;
 
-  constructor(params: PutObjectRequest, opts, emitter: events.EventEmitter) {
+  constructor(params: PutObjectCommandInput, opts, emitter: events.EventEmitter) {
     this.params = params;
     this.opts = opts;
     this.emitter = emitter;

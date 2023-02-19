@@ -101,10 +101,10 @@ export class StorageChunkUpload implements StorageProvider {
    * @return {Object} - Current configuration
    */
   public configure(config?): object {
-    logger.debug('configure Storage', config);
+    logger.debug('configure StorageChunkUpload', config);
     if (!config) return this._storageConfig;
-    const amplifyConfig = parseAWSExports(config);
-    this._storageConfig = Object.assign({}, this._storageConfig, amplifyConfig.Storage['AWSS3']);
+    const _config = this._awsStorageProvider.configure(config);
+    this._storageConfig = Object.assign({}, this._storageConfig, _config['AWSS3']);
     if (!this._storageConfig.bucket) {
       logger.debug('Do not have bucket yet');
     }

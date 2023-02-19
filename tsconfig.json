@@ -12,10 +12,17 @@
 			"es2019",
 			"es2020.promise"
 		],
-		"moduleResolution": "node"
+		"moduleResolution": "node",
+		"noEmitOnError": true,
+		"incremental": true,
+		"importHelpers": true,
+    "esModuleInterop": true,
+		"noImplicitAny": false,
+    "types": ["node", "jest"]
   },
   "include": [
     "src/index.ts"
   ],
-  "exclude": ["node_modules", "tmp", "**/*.d.ts"]
+  "exclude": ["node_modules", "tmp", "**/*.d.ts"],
+  "downlevelIteration": true,
 }
